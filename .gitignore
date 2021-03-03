@@ -1,5 +1,6 @@
 # Object file
 *.o
 
-# Ada Library Information
-*.ali
+
+xd-mybatis/.idea/*
+xd-mybatis/xd-mybatis.iml

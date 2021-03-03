@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace: 保持全局唯一，最好和DAO层的Java接口一致，这样就可以映射对应的SQL语句到对应的方法名称、参数和返回类型-->
+<!--在DAO包的对应类(例如VideoMapper)，右键->Copy Reference获得引用-->
+<!--Mybatis使用i接口动态代理与DAO交互，所以namespace必须为DAO层的全路径-->
+<mapper namespace="net.xdclass.online_class.dao.VideoMapper">
+
+    <!-- id在当前mapper下应保持惟一， 方法名应与接口一致，在只有一个参数时，通过自动映射，可以省略参数指定  -->
+    <!--  resultType为SQL查询结果集的封装  -->
+    <!--  如果用@param取了别名，则#{video_id}应与别名保持一致，否则与形参名保持一致  -->
+    <select id="selectById" resultType="net.xdclass.online_class.domain.Video">
+
+    SELECT * FROM video WHERE id = #{video_id}
+
+  </select>
+
+</mapper>

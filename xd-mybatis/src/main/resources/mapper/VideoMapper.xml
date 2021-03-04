@@ -8,14 +8,18 @@
 <!--Mybatis使用i接口动态代理与DAO交互，所以namespace必须为DAO层的全路径-->
 <mapper namespace="net.xdclass.online_class.dao.VideoMapper">
 
+    <sql id="base_video_field">
+        id,title,summary,cover_img
+    </sql>
+
     <!-- id在当前mapper下应保持惟一， 方法名应与接口一致，在只有一个参数时，通过自动映射，可以省略参数指定  -->
     <!--  resultType为SQL查询结果集的封装  -->
     <!--  如果用@param取了别名，则#{video_id}应与别名保持一致，否则与形参名保持一致  -->
     <select id="selectById" resultType="net.xdclass.online_class.domain.Video">
-        SELECT * FROM video WHERE id = #{video_id, jdbcType=INTEGER}
+        SELECT <include refid="base_video_field"/> FROM video WHERE id = #{video_id, jdbcType=INTEGER}
     </select>
 
-    <select id="selectByScoreAndTitle" resultType="net.xdclass.online_class.domain.Video">
+    <select id="selectByScoreAndTitle" resultType="Video">
         SELECT * FROM video WHERE score = #{score, jdbcType=DOUBLE} AND title LIKE CONCAT("%", #{title} ,"%")
     </select>
 

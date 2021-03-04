@@ -31,15 +31,15 @@ public class SqlSessionDemo {
             // 1 调用 VideoMapper 接口的 selectById() 方法
             // 2 将@Param("video_id")映射到 VideoMapper.xml 的 VideoMapper namespace 中的 #{video_id}
             // 3 将 SQL 的执行结果映射到 resultType
-            // Video video = videoMapper.selectById(31);
+             Video video = videoMapper.selectById(31);
 
-            //System.out.println(video);
+            System.out.println(video);
 
-            // List<Video> videoList = videoMapper.selectVideoList();
-            // System.out.println(videoList);
+             List<Video> videoList = videoMapper.selectVideoList();
+             System.out.println(videoList);
 
-            List<Video> videoList = videoMapper.selectByScoreAndTitle(8.7, "HTML");
-            System.out.println(videoList);
+//            List<Video> videoList = videoMapper.selectByScoreAndTitle(8.7, "HTML");
+//            System.out.println(videoList);
 
 
 //            Video video = new Video();
@@ -76,10 +76,10 @@ public class SqlSessionDemo {
 //            System.out.println(rows);
 
 
-            Video video = new Video();
-            video.setId(51);
-            video.setSummary("Java Virtual Machine");
-            videoMapper.updateVideoSelective(video);
+//            Video video = new Video();
+//            video.setId(51);
+//            video.setSummary("Java Virtual Machine");
+//            videoMapper.updateVideoSelective(video);
         }
 
     }

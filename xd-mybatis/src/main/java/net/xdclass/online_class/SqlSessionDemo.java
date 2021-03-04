@@ -1,7 +1,9 @@
 package net.xdclass.online_class;
 
 import net.xdclass.online_class.dao.VideoMapper;
+import net.xdclass.online_class.dao.VideoOrderMapper;
 import net.xdclass.online_class.domain.Video;
+import net.xdclass.online_class.domain.VideoOrder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -31,12 +33,11 @@ public class SqlSessionDemo {
             // 1 调用 VideoMapper 接口的 selectById() 方法
             // 2 将@Param("video_id")映射到 VideoMapper.xml 的 VideoMapper namespace 中的 #{video_id}
             // 3 将 SQL 的执行结果映射到 resultType
-             Video video = videoMapper.selectById(31);
-
-            System.out.println(video);
-
-             List<Video> videoList = videoMapper.selectVideoList();
-             System.out.println(videoList);
+//             Video video = videoMapper.selectById(31);
+//             System.out.println(video);
+//
+//             List<Video> videoList = videoMapper.selectVideoList();
+//             System.out.println(videoList);
 
 //            List<Video> videoList = videoMapper.selectByScoreAndTitle(8.7, "HTML");
 //            System.out.println(videoList);
@@ -80,6 +81,16 @@ public class SqlSessionDemo {
 //            video.setId(51);
 //            video.setSummary("Java Virtual Machine");
 //            videoMapper.updateVideoSelective(video);
+
+
+
+//            Video video = videoMapper.selectBasicFieldByIdWithResultMap(31);
+//            System.out.println(video);
+
+            VideoOrderMapper videoOrderMapper = sqlSession.getMapper(VideoOrderMapper.class);
+            List<VideoOrder> videoOrderList = videoOrderMapper.queryVideoOrderList();
+            System.out.println(videoOrderList);
+
         }
 
     }

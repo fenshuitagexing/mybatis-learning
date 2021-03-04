@@ -65,5 +65,23 @@
         where
         id = #{id}
     </update>
+    
+    <resultMap id="VideoResultMap" type="Video">
+
+        <!--    id指定查询列的唯一标识    -->
+        <!--    将数据表中的id(查询结果的主键)映射到类属性中的id    -->
+        <id column="id" property="id" jdbcType="INTEGER" />
+
+        <!--    将某一列映射到POJO对象的某一属性    -->
+        <result column="video_title" property="title" jdbcType="VARCHAR" />
+        <result column="summary" property="summary" jdbcType="VARCHAR" />
+        <result column="cover_img" property="coverImg" jdbcType="VARCHAR" />
+
+
+    </resultMap>
+    <!--  通过设置resultMap, 将查询结果映射到上述的各个result的column中  -->
+    <select id="selectBasicFieldByIdWithResultMap" resultMap="VideoResultMap">
+        SELECT id, title as video_title, summary, cover_img FROM video WHERE id = #{video_id}
+    </select>
 
 </mapper>

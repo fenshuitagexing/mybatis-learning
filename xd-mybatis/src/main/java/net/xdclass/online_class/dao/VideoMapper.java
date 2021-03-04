@@ -22,4 +22,6 @@ public interface VideoMapper {
     int addVideoInBulk(List<Video> newVideoList);
 
     int updateVideoSelective(Video video);
+
+    Video selectBasicFieldByIdWithResultMap(@Param("video_id") int id);
 }

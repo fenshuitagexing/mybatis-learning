@@ -14,4 +14,12 @@ public interface VideoMapper {
     // 使用注解，就不再与Mapper.xml文件交互
     @Select("SELECT * FROM video")
     List<Video> selectVideoList();
+
+    List<Video> selectByScoreAndTitle(@Param("score") double score, @Param("title") String title);
+
+    int addVideo(Video video);
+
+    int addVideoInBulk(List<Video> newVideoList);
+
+    int updateVideoSelective(Video video);
 }

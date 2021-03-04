@@ -12,9 +12,54 @@
     <!--  resultType为SQL查询结果集的封装  -->
     <!--  如果用@param取了别名，则#{video_id}应与别名保持一致，否则与形参名保持一致  -->
     <select id="selectById" resultType="net.xdclass.online_class.domain.Video">
+        SELECT * FROM video WHERE id = #{video_id, jdbcType=INTEGER}
+    </select>
 
-    SELECT * FROM video WHERE id = #{video_id}
+    <select id="selectByScoreAndTitle" resultType="net.xdclass.online_class.domain.Video">
+        SELECT * FROM video WHERE score = #{score, jdbcType=DOUBLE} AND title LIKE CONCAT("%", #{title} ,"%")
+    </select>
 
-  </select>
+    <!--  将数据库的自增主键(keyColumn="id")映射到实体类的自增主键(keyProperty="id")  -->
+    <insert id="addVideo" parameterType="net.xdclass.online_class.domain.Video"
+    useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO `video` ( `title`, `summary`, `cover_img`, `price`, `creation_time`, `score`)
+        VALUES
+        (#{title,jdbcType=VARCHAR},#{summary,jdbcType=VARCHAR},#{coverImg,jdbcType=VARCHAR},
+        #{price,jdbcType=INTEGER},#{creationTime,jdbcType=TIMESTAMP},#{score,jdbcType=DOUBLE});
+    </insert>
+
+    <!--foreach 入参是List类型的时候，collection 属性值为list,
+        入参是Map类型的时候，collection 属性值为map的key值  -->
+    <insert id="addVideoInBulk" parameterType="net.xdclass.online_class.domain.Video">
+    INSERT INTO `video` ( `title`, `summary`, `cover_img`, `price`, `creation_time`, `score`)
+    VALUES
+    <foreach collection="list" item="video" separator=",">
+        (#{video.title,jdbcType=VARCHAR},#{video.summary,jdbcType=VARCHAR},#{video.coverImg,jdbcType=VARCHAR},
+        #{video.price,jdbcType=INTEGER},
+        #{video.creationTime,jdbcType=TIMESTAMP},#{video.score,jdbcType=DOUBLE})
+    </foreach>
+    </insert>
+
+    <update id="updateVideoSelective" parameterType="net.xdclass.online_class.domain.Video">
+        update video
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="title != null "> title = #{title,jdbcType=VARCHAR},</if>
+
+            <if test="summary != null "> summary = #{summary,jdbcType=VARCHAR},</if>
+
+            <if test="coverImg != null "> cover_img = #{coverImg,jdbcType=VARCHAR},</if>
+
+            <if test="price != 0 "> price = #{price,jdbcType=INTEGER},</if>
+
+            <if test="creationTime !=null "> creation_time = #{creationTime,jdbcType=TIMESTAMP},</if>
+
+            <!-- 特别注意： 一定要看pojo类里面的是基本数据类型，还是包装数据类型-->
+            <if test="score != null "> score = #{score,jdbcType=DOUBLE},</if>
+
+        </trim>
+        where
+        id = #{id}
+    </update>
 
 </mapper>

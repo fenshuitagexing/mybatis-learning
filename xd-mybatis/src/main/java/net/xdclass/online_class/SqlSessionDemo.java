@@ -87,11 +87,24 @@ public class SqlSessionDemo {
 //            Video video = videoMapper.selectBasicFieldByIdWithResultMap(31);
 //            System.out.println(video);
 
+
             VideoOrderMapper videoOrderMapper = sqlSession.getMapper(VideoOrderMapper.class);
-            List<VideoOrder> videoOrderList = videoOrderMapper.queryVideoOrderList();
-            System.out.println(videoOrderList);
+            List<VideoOrder> videoOrderList = videoOrderMapper.queryVideoOrderListLazyLoading();
 
+            // 不需要User属性，因此不会查询User表，也就不会加载Mapper.xml中的查询User表的SQL
+            System.out.println(videoOrderList.size());
+
+            // 未曾开启二级缓存，此处的查询会读取一级缓存中的数据
+            // 同一个user_id，只查询一次，后续用到时从缓存中读取
+            for (VideoOrder videoOrder : videoOrderList) {
+
+                // 不需要User属性，因此不会查询User表，也就不会加载Mapper.xml中的查询User表的SQL
+                // (而在Debug模式下会加载Mapper.xml中的查询User表的SQL，因而Debug模式无法测试懒加载)
+                System.out.println(videoOrder.getVideoTitle());
+
+                // 需要查询DB中的User表，会加载Mapper.xml中的查询User表的SQL
+                System.out.println(videoOrder.getUser().getName());
+            }
         }
-
     }
 }

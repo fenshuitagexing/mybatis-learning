@@ -7,4 +7,6 @@ import java.util.List;
 public interface VideoOrderMapper {
 
     List<VideoOrder> queryVideoOrderList();
+
+    List<VideoOrder> queryVideoOrderListLazyLoading();
 }

@@ -3,9 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--namespace: 保持全局唯一，最好和DAO层的Java接口一致，这样就可以映射对应的SQL语句到对应的方法名称、参数和返回类型-->
-<!--在DAO包的对应类(例如VideoMapper)，右键->Copy Reference获得引用-->
-<!--Mybatis使用i接口动态代理与DAO交互，所以namespace必须为DAO层的全路径-->
+
 <mapper namespace="net.xdclass.online_class.dao.VideoOrderMapper">
 
     <resultMap id="VideoOrderResultMap" type="VideoOrder">
@@ -30,7 +28,7 @@
         
     </resultMap>
 
-    <!--  和上述resultMap的id一致  -->
+    <!--  resultMap和上述resultMap的id一致  -->
     <select id="queryVideoOrderList" resultMap="VideoOrderResultMap">
         SELECT
         vo.id,
@@ -48,4 +46,47 @@
         FROM video_order vo LEFT JOIN user u ON vo.user_id = u.id
     </select>
 
+
+
+
+
+
+
+
+    <resultMap id="VideoOrderResultMapLazyLoading" type="VideoOrder">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" />
+        <result column="order_number" property="orderNumber" />
+        <result column="creation_time" property="creationTime" />
+        <result column="state" property="state" />
+        <result column="total_fee" property="totalFee" />
+        <result column="video_id" property="videoId" />
+        <result column="video_title" property="videoTitle" />
+
+        <!--当需要查询到user属性信息时，就会调用queryUserById-->
+        <!--    select： 指定延迟加载需要执行的statement id  column： 和select查询关联的字段    -->
+        <association property="user" javaType="User" column="user_id" select="queryUserById"/>
+
+
+    </resultMap>
+
+    <!--  resultMap和上述resultMap的id一致  -->
+    <select id="queryVideoOrderListLazyLoading" resultMap="VideoOrderResultMapLazyLoading">
+        SELECT
+        vo.id,
+        vo.user_id,
+        vo.order_number,
+        vo.creation_time,
+        vo.state,
+        vo.total_fee,
+        vo.video_id,
+        vo.video_title
+        FROM video_order vo
+    </select>
+
+    <!--  id与<association>中的select一致-->
+    <!-- #{id}的值来自于 <association>中的 column -->
+    <select id="queryUserById" resultType="User">
+        SELECT * FROM user WHERE id=#{id}
+    </select>
 </mapper>

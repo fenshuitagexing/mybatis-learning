@@ -12,10 +12,14 @@
         id,title,summary,cover_img
     </sql>
 
+    <cache eviction="LRU" flushInterval="100000" readOnly="true" size="1024"/>
+
     <!-- id在当前mapper下应保持惟一， 方法名应与接口一致，在只有一个参数时，通过自动映射，可以省略参数指定  -->
     <!--  resultType为SQL查询结果集的封装  -->
     <!--  如果用@param取了别名，则#{video_id}应与别名保持一致，否则与形参名保持一致  -->
-    <select id="selectById" resultType="net.xdclass.online_class.domain.Video">
+    <!--  useCache="false"> 关闭二级缓存  -->
+    <select id="selectById" parameterType="java.lang.Integer"
+            resultType="net.xdclass.online_class.domain.Video" useCache="false">
         SELECT <include refid="base_video_field"/> FROM video WHERE id = #{video_id, jdbcType=INTEGER}
     </select>
 
